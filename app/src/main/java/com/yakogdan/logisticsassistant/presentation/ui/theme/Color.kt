@@ -1,4 +1,4 @@
-package com.yakogdan.logisticsassistant.ui.theme
+package com.yakogdan.logisticsassistant.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
