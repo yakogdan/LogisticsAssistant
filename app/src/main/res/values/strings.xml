@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Logistics Assistant</string>
+    <string name="app_name">Помощник логиста</string>
     <string name="splash_screen_description">Логотип на экране загрузки</string>
+    <string name="company_logo">Логотип компании</string>
+    <string name="welcome_text">Добро пожаловать в БИА.Помощник логиста</string>
+    <string name="enter_number">Введите свой номер для авторизации</string>
 </resources>
