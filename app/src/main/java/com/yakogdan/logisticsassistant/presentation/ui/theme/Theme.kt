@@ -32,14 +32,15 @@ private val darkColorScheme = darkColorScheme(
 private val lightColorScheme = lightColorScheme(
     primary = Color.White,
     secondary = DarkGray,
-    tertiary = Pink40,
+    tertiary = Gray,
     background = Color.White,
     surface = Color(0xFFCECECE),
     onPrimary = Color.White,
     onSecondary = Color.White,
-    onTertiary = Color.White,
+    onTertiary = MiddleGrayBlue,
     onBackground = Black,
     onSurface = Color(0xFF1C1B1F),
+    outline = DarkGray
 )
 
 @Composable

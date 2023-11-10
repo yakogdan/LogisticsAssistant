@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -43,6 +45,17 @@ fun LoginScreen() {
         Header()
         Spacer(modifier = Modifier.height(76.dp))
         Center()
+        Button(
+            onClick = {  },
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = stringResource(R.string.continue_button))
+            }
+        }
     }
 }
 
@@ -93,7 +106,8 @@ private fun Center() {
         onValueChange = {
             textValue.value = it
         },
-        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone)
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
+        label = { Text(text = "+7 (999) 000 - 00 - 00") }
     )
 }
 

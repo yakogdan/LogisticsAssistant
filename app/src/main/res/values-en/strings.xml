@@ -5,4 +5,5 @@
     <string name="company_logo">Company logo</string>
     <string name="welcome_text">Welcome to BIA.Logistics Assistant</string>
     <string name="enter_number">Enter your authorization number</string>
+    <string name="continue_button">Continue</string>
 </resources>
