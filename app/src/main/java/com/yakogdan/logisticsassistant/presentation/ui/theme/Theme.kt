@@ -22,6 +22,8 @@ private val darkColorScheme = darkColorScheme(
     onTertiary = Color.Black,
     onBackground = Color.White,
     onSurface = Color(0xFFE9E4F5),
+    outline = DarkGray,
+    outlineVariant = Gray,
     error = RedError
 )
 
@@ -37,6 +39,7 @@ private val lightColorScheme = lightColorScheme(
     onBackground = Dark,
     onSurface = Color(0xFF1C1B1F),
     outline = DarkGray,
+    outlineVariant = Gray,
     error = RedError
 )
 

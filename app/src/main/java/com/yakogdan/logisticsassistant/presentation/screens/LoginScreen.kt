@@ -2,6 +2,7 @@ package com.yakogdan.logisticsassistant.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
@@ -36,29 +39,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yakogdan.logisticsassistant.R
 import com.yakogdan.logisticsassistant.presentation.tools.mobileNumberFilter
-import com.yakogdan.logisticsassistant.presentation.ui.theme.MiddleGrayBlue
 
 @Composable
 fun LoginScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
     ) {
-        Spacer(modifier = Modifier.height(40.dp))
-        Header()
-        Spacer(modifier = Modifier.height(76.dp))
-        Center()
-        Button(
-            onClick = { },
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
-        ) {
-            Box(
-                modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
-            ) {
-                Text(text = stringResource(R.string.continue_button))
-            }
+        Column {
+            Spacer(modifier = Modifier.height(40.dp))
+            Header()
+            Spacer(modifier = Modifier.height(76.dp))
+            Center()
+            Spacer(modifier = Modifier.height(20.dp))
         }
+        ContinueButton()
     }
 }
 
@@ -107,18 +103,28 @@ private fun Center() {
         onValueChange = {
             if (it.length <= maxChar) textValue.value = it
         },
+        textStyle = TextStyle.Default.copy(
+            fontSize = 16.sp,
+            fontFamily = FontFamily(Font(R.font.stolzl_regular)),
+            color = MaterialTheme.colorScheme.onBackground
+        ),
+        shape = RoundedCornerShape(26.dp),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Phone, imeAction = ImeAction.Send
         ),
         placeholder = {
-            Text(text = "999-000-00-00", color = MiddleGrayBlue)
+            Text(text = "999-000-00-00", style = TextStyle.Default.copy(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.stolzl_regular)),
+                color = MaterialTheme.colorScheme.onTertiary
+            ))
         },
         keyboardActions = KeyboardActions(onSend = {}),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.background,
             unfocusedContainerColor = MaterialTheme.colorScheme.background,
             focusedBorderColor = MaterialTheme.colorScheme.outline,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
             focusedTextColor = MaterialTheme.colorScheme.onBackground,
             unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
             errorBorderColor = MaterialTheme.colorScheme.error
@@ -131,6 +137,24 @@ private fun Center() {
         visualTransformation = {
             mobileNumberFilter(it, maxChar)
         })
+}
+
+@Composable
+private fun ContinueButton() {
+    Column(modifier = Modifier.fillMaxSize(),verticalArrangement = Arrangement.Bottom) {
+        Button(
+            modifier = Modifier.height(54.dp),
+            onClick = { },
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
+            ) {
+                Text(text = stringResource(R.string.continue_button), fontSize = 16.sp)
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+    }
 }
 
 @Preview
