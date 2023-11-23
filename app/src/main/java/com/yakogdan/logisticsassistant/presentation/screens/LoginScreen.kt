@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +49,7 @@ fun LoginScreen() {
             .fillMaxSize()
             .padding(horizontal = 16.dp),
     ) {
-        Column {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = Modifier.height(40.dp))
             Header()
             Spacer(modifier = Modifier.height(76.dp))
@@ -113,11 +115,13 @@ private fun Center() {
             keyboardType = KeyboardType.Phone, imeAction = ImeAction.Send
         ),
         placeholder = {
-            Text(text = "999-000-00-00", style = TextStyle.Default.copy(
-                fontSize = 16.sp,
-                fontFamily = FontFamily(Font(R.font.stolzl_regular)),
-                color = MaterialTheme.colorScheme.onTertiary
-            ))
+            Text(
+                text = "999-000-00-00", style = TextStyle.Default.copy(
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.stolzl_regular)),
+                    color = MaterialTheme.colorScheme.onTertiary
+                )
+            )
         },
         keyboardActions = KeyboardActions(onSend = {}),
         colors = OutlinedTextFieldDefaults.colors(
@@ -141,7 +145,7 @@ private fun Center() {
 
 @Composable
 private fun ContinueButton() {
-    Column(modifier = Modifier.fillMaxSize(),verticalArrangement = Arrangement.Bottom) {
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         Button(
             modifier = Modifier.height(54.dp),
             onClick = { },
