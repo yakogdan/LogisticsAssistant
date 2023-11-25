@@ -31,6 +31,10 @@ private val lightColorScheme = lightColorScheme(
     primary = Dark,
     secondary = DarkGray,
     tertiary = Gray,
+    primaryContainer = Dark,
+    onPrimaryContainer = Color.White,
+    secondaryContainer = Gray,
+    onSecondaryContainer = MiddleGrayBlue,
     background = Color.White,
     surface = Color(0xFFCECECE),
     onPrimary = Color.White,
@@ -47,8 +51,7 @@ private val lightColorScheme = lightColorScheme(
 fun LogisticsAssistantTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    dynamicColor: Boolean = true, content: @Composable () -> Unit
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -69,8 +72,6 @@ fun LogisticsAssistantTheme(
 //    }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+        colorScheme = colorScheme, typography = Typography, content = content
     )
 }

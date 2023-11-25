@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -44,6 +45,9 @@ import com.yakogdan.logisticsassistant.presentation.tools.mobileNumberFilter
 
 @Composable
 fun LoginScreen() {
+    val isActive = rememberSaveable {
+        mutableStateOf(false)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,10 +57,10 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.height(40.dp))
             Header()
             Spacer(modifier = Modifier.height(76.dp))
-            Center()
+            Center(isActive)
             Spacer(modifier = Modifier.height(20.dp))
         }
-        ContinueButton()
+        ContinueButton(isActive.value)
     }
 }
 
@@ -81,21 +85,25 @@ private fun Header() {
 }
 
 @Composable
-private fun Center() {
+private fun Center(isActive: MutableState<Boolean>) {
     Text(
         text = stringResource(R.string.welcome_text),
         fontSize = 22.sp,
         fontFamily = FontFamily(Font(R.font.stolzl_regular)),
         color = MaterialTheme.colorScheme.onBackground
     )
+
     Spacer(modifier = Modifier.height(16.dp))
+
     Text(
         text = stringResource(R.string.enter_number),
         fontSize = 14.sp,
         fontFamily = FontFamily(Font(R.font.stolzl_book)),
         color = MaterialTheme.colorScheme.secondary
     )
+
     Spacer(modifier = Modifier.height(24.dp))
+
     val textValue = rememberSaveable {
         mutableStateOf("")
     }
@@ -104,6 +112,7 @@ private fun Center() {
         value = textValue.value,
         onValueChange = {
             if (it.length <= maxChar) textValue.value = it
+            isActive.value = it.length == maxChar
         },
         textStyle = TextStyle.Default.copy(
             fontSize = 16.sp,
@@ -144,12 +153,18 @@ private fun Center() {
 }
 
 @Composable
-private fun ContinueButton() {
+private fun ContinueButton(isActive: Boolean) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         Button(
             modifier = Modifier.height(54.dp),
+            enabled = isActive,
             onClick = { },
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
