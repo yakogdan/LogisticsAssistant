@@ -6,4 +6,7 @@
     <string name="welcome_text">Welcome to BIA.Logistics Assistant</string>
     <string name="enter_number">Enter your authorization number</string>
     <string name="continue_button">Continue</string>
+    <string name="enter_password">Enter the password</string>
+    <string name="get_password">To get a password, contact your supervisor</string>
+    <string name="back">Back</string>
 </resources>

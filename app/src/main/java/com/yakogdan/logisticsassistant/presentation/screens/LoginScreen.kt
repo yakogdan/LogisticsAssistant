@@ -17,8 +17,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -56,8 +60,8 @@ fun LoginScreen() {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = Modifier.height(40.dp))
             Header()
-            Spacer(modifier = Modifier.height(76.dp))
-            Center(isActive)
+
+            CenterPassword(isActive)
             Spacer(modifier = Modifier.height(20.dp))
         }
         ContinueButton(isActive.value)
@@ -85,7 +89,8 @@ private fun Header() {
 }
 
 @Composable
-private fun Center(isActive: MutableState<Boolean>) {
+private fun CenterLogin(isActive: MutableState<Boolean>) {
+    Spacer(modifier = Modifier.height(76.dp))
     Text(
         text = stringResource(R.string.welcome_text),
         fontSize = 22.sp,
@@ -150,6 +155,84 @@ private fun Center(isActive: MutableState<Boolean>) {
         visualTransformation = {
             mobileNumberFilter(it, maxChar)
         })
+}
+
+@Composable
+private fun CenterPassword(isActive: MutableState<Boolean>) {
+    Spacer(modifier = Modifier.height(88.dp))
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClick = { }) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.back)
+            )
+        }
+        Text(
+            text = stringResource(R.string.enter_password),
+            fontSize = 22.sp,
+            fontFamily = FontFamily(Font(R.font.stolzl_regular)),
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        text = stringResource(R.string.get_password),
+        fontSize = 14.sp,
+        fontFamily = FontFamily(Font(R.font.stolzl_book)),
+        color = MaterialTheme.colorScheme.secondary
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    val textValue = rememberSaveable {
+        mutableStateOf("")
+    }
+    val maxChar = 10
+    OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+        value = textValue.value,
+        onValueChange = {
+            if (it.length <= maxChar) textValue.value = it
+            isActive.value = it.length == maxChar
+        },
+        textStyle = TextStyle.Default.copy(
+            fontSize = 16.sp,
+            fontFamily = FontFamily(Font(R.font.stolzl_regular)),
+            color = MaterialTheme.colorScheme.onBackground
+        ),
+        shape = RoundedCornerShape(26.dp),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Phone, imeAction = ImeAction.Send
+        ),
+//        placeholder = {
+//            Text(
+//                text = "999-000-00-00", style = TextStyle.Default.copy(
+//                    fontSize = 16.sp,
+//                    fontFamily = FontFamily(Font(R.font.stolzl_regular)),
+//                    color = MaterialTheme.colorScheme.onTertiary
+//                )
+//            )
+//        },
+        keyboardActions = KeyboardActions(onSend = {}),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            focusedBorderColor = MaterialTheme.colorScheme.outline,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+            focusedTextColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+            errorBorderColor = MaterialTheme.colorScheme.error
+        ),
+//        supportingText = {
+//            if (textValue.value.length > 4) {
+//                Text(text = "Ошибка")
+//            }
+//        },
+//        visualTransformation = {
+//            mobileNumberFilter(it, maxChar)
+//        }
+    )
 }
 
 @Composable
