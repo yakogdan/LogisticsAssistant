@@ -1,5 +1,6 @@
 package com.yakogdan.logisticsassistant.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,16 +42,26 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yakogdan.logisticsassistant.R
 import com.yakogdan.logisticsassistant.presentation.tools.mobileNumberFilter
+import com.yakogdan.logisticsassistant.presentation.tools.passwordFilter
 
 @Composable
 fun LoginScreen() {
     val isActive = rememberSaveable {
         mutableStateOf(false)
+    }
+    val textValueLogin = rememberSaveable {
+        mutableStateOf("")
+    }
+    val textValuePassword = rememberSaveable {
+        mutableStateOf("")
     }
     Column(
         modifier = Modifier
@@ -61,10 +72,10 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.height(40.dp))
             Header()
 
-            CenterPassword(isActive)
+            CenterPassword(isActive, textValuePassword)
             Spacer(modifier = Modifier.height(20.dp))
         }
-        ContinueButton(isActive.value)
+        ContinueButton(isActive.value, textValuePassword.value)
     }
 }
 
@@ -158,7 +169,7 @@ private fun CenterLogin(isActive: MutableState<Boolean>) {
 }
 
 @Composable
-private fun CenterPassword(isActive: MutableState<Boolean>) {
+private fun CenterPassword(isActive: MutableState<Boolean>, textValue: MutableState<String>) {
     Spacer(modifier = Modifier.height(88.dp))
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = { }) {
@@ -186,35 +197,39 @@ private fun CenterPassword(isActive: MutableState<Boolean>) {
 
     Spacer(modifier = Modifier.height(24.dp))
 
-    val textValue = rememberSaveable {
-        mutableStateOf("")
-    }
-    val maxChar = 10
-    OutlinedTextField(modifier = Modifier.fillMaxWidth(),
+    val letterSpacing = TextUnit(9.0f, TextUnitType.Sp)
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
         value = textValue.value,
         onValueChange = {
-            if (it.length <= maxChar) textValue.value = it
-            isActive.value = it.length == maxChar
+            if (it.length <= 6) textValue.value = it
+            isActive.value = it.length >= 6
         },
         textStyle = TextStyle.Default.copy(
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(R.font.stolzl_regular)),
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center,
+            letterSpacing = letterSpacing
         ),
         shape = RoundedCornerShape(26.dp),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Phone, imeAction = ImeAction.Send
         ),
-//        placeholder = {
-//            Text(
-//                text = "999-000-00-00", style = TextStyle.Default.copy(
-//                    fontSize = 16.sp,
-//                    fontFamily = FontFamily(Font(R.font.stolzl_regular)),
-//                    color = MaterialTheme.colorScheme.onTertiary
-//                )
-//            )
-//        },
-        keyboardActions = KeyboardActions(onSend = {}),
+        placeholder = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = "______",
+                style = TextStyle.Default.copy(
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.stolzl_regular)),
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+                letterSpacing = letterSpacing
+            )
+        },
+        keyboardActions = KeyboardActions(onSend = { sendData(textValue.value) }),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.background,
             unfocusedContainerColor = MaterialTheme.colorScheme.background,
@@ -229,19 +244,19 @@ private fun CenterPassword(isActive: MutableState<Boolean>) {
 //                Text(text = "Ошибка")
 //            }
 //        },
-//        visualTransformation = {
-//            mobileNumberFilter(it, maxChar)
-//        }
+        visualTransformation = {
+            passwordFilter(it)
+        }
     )
 }
 
 @Composable
-private fun ContinueButton(isActive: Boolean) {
+private fun ContinueButton(isActive: Boolean, textValue: String) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         Button(
             modifier = Modifier.height(54.dp),
             enabled = isActive,
-            onClick = { },
+            onClick = { sendData(textValue) },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -256,6 +271,12 @@ private fun ContinueButton(isActive: Boolean) {
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+fun sendData(textValue: String) {
+    if (textValue.length == 6) {
+        Log.d("myTAG", "ContinueButton: $textValue")
     }
 }
 
