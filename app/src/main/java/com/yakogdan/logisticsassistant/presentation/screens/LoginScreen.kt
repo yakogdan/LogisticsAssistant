@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import com.yakogdan.logisticsassistant.R
 import com.yakogdan.logisticsassistant.presentation.tools.mobileNumberFilter
 import com.yakogdan.logisticsassistant.presentation.tools.passwordFilter
@@ -75,7 +76,7 @@ fun LoginScreen() {
             CenterPassword(isActive, textValuePassword)
             Spacer(modifier = Modifier.height(20.dp))
         }
-        ContinueButton(isActive.value, textValuePassword.value)
+         ContinueButton(isActive.value, textValuePassword.value)
     }
 }
 
@@ -127,7 +128,7 @@ private fun CenterLogin(isActive: MutableState<Boolean>) {
     OutlinedTextField(modifier = Modifier.fillMaxWidth(),
         value = textValue.value,
         onValueChange = {
-            if (it.length <= maxChar) textValue.value = it
+            if (it.length <= maxChar && it.isDigitsOnly()) textValue.value = it
             isActive.value = it.length == maxChar
         },
         textStyle = TextStyle.Default.copy(
@@ -158,11 +159,6 @@ private fun CenterLogin(isActive: MutableState<Boolean>) {
             unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
             errorBorderColor = MaterialTheme.colorScheme.error
         ),
-//        supportingText = {
-//            if (textValue.value.length > 4) {
-//                Text(text = "Ошибка")
-//            }
-//        },
         visualTransformation = {
             mobileNumberFilter(it, maxChar)
         })
@@ -202,8 +198,8 @@ private fun CenterPassword(isActive: MutableState<Boolean>, textValue: MutableSt
         modifier = Modifier.fillMaxWidth(),
         value = textValue.value,
         onValueChange = {
-            if (it.length <= 6) textValue.value = it
-            isActive.value = it.length >= 6
+            if (it.length <= 6 && it.isDigitsOnly()) textValue.value = it
+            isActive.value = it.trim().length >= 6
         },
         textStyle = TextStyle.Default.copy(
             fontSize = 16.sp,

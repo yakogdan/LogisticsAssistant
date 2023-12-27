@@ -16,9 +16,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navigationState = rememberNavigationState()
             LogisticsAssistantTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    val navigationState = rememberNavigationState()
                     AppNavGraph(
                         navHostController = navigationState.navHostController,
                         splashScreenContent = { SplashScreen(navigationState.navHostController) },

@@ -15,9 +15,11 @@ fun passwordFilter(text: AnnotatedString): TransformedText {
             append(trimmed[i])
         }
         pushStyle(SpanStyle(color = Dark))
+
         if (length > 0) {
             append(mask.takeLast(mask.length - length))
         }
+
         toAnnotatedString()
     }
 
@@ -25,6 +27,7 @@ fun passwordFilter(text: AnnotatedString): TransformedText {
         override fun originalToTransformed(offset: Int): Int {
             return offset
         }
+
         override fun transformedToOriginal(offset: Int): Int {
             return offset
         }
