@@ -1,6 +1,7 @@
 package com.yakogdan.logisticsassistant.presentation.screens
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,11 +31,13 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -49,21 +52,33 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yakogdan.logisticsassistant.R
+import com.yakogdan.logisticsassistant.presentation.screenstates.LoginScreenState
 import com.yakogdan.logisticsassistant.presentation.tools.mobileNumberFilter
 import com.yakogdan.logisticsassistant.presentation.tools.passwordFilter
+import com.yakogdan.logisticsassistant.presentation.viewmodels.LoginViewModel
 
 @Composable
 fun LoginScreen() {
+
+    val viewModel: LoginViewModel = viewModel()
+
     val isActive = rememberSaveable {
         mutableStateOf(false)
     }
+
     val textValueLogin = rememberSaveable {
         mutableStateOf("")
     }
+
     val textValuePassword = rememberSaveable {
         mutableStateOf("")
     }
+
+    val screenState = viewModel.loginScreenStateFlow.collectAsState(LoginScreenState.Login)
+
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -72,11 +87,34 @@ fun LoginScreen() {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = Modifier.height(40.dp))
             Header()
+            when (screenState.value) {
+                LoginScreenState.Login -> {
+                    CenterLogin(isActive, textValueLogin)
+                }
 
-            CenterPassword(isActive, textValuePassword)
-            Spacer(modifier = Modifier.height(20.dp))
+                LoginScreenState.Password -> {
+                    CenterPassword(isActive, textValuePassword) {
+                        viewModel.changeStateLogin()
+                    }
+                }
+            }
         }
-         ContinueButton(isActive.value, textValuePassword.value)
+        Spacer(modifier = Modifier.height(20.dp))
+        when (screenState.value) {
+            LoginScreenState.Login -> {
+                ContinueButton(isActive.value) {
+                    viewModel.changeStatePassword()
+                    isActive.value = false
+                }
+            }
+
+            LoginScreenState.Password -> {
+                ContinueButton(isActive.value) {
+                    Toast.makeText(context, "Продолжить", Toast.LENGTH_SHORT).show()
+                    isActive.value = false
+                }
+            }
+        }
     }
 }
 
@@ -101,7 +139,10 @@ private fun Header() {
 }
 
 @Composable
-private fun CenterLogin(isActive: MutableState<Boolean>) {
+private fun CenterLogin(
+    isActive: MutableState<Boolean>,
+    textValue: MutableState<String>
+) {
     Spacer(modifier = Modifier.height(76.dp))
     Text(
         text = stringResource(R.string.welcome_text),
@@ -121,15 +162,12 @@ private fun CenterLogin(isActive: MutableState<Boolean>) {
 
     Spacer(modifier = Modifier.height(24.dp))
 
-    val textValue = rememberSaveable {
-        mutableStateOf("")
-    }
     val maxChar = 10
     OutlinedTextField(modifier = Modifier.fillMaxWidth(),
         value = textValue.value,
         onValueChange = {
             if (it.length <= maxChar && it.isDigitsOnly()) textValue.value = it
-            isActive.value = it.length == maxChar
+            isActive.value = it.length >= maxChar
         },
         textStyle = TextStyle.Default.copy(
             fontSize = 16.sp,
@@ -165,10 +203,14 @@ private fun CenterLogin(isActive: MutableState<Boolean>) {
 }
 
 @Composable
-private fun CenterPassword(isActive: MutableState<Boolean>, textValue: MutableState<String>) {
+private fun CenterPassword(
+    isActive: MutableState<Boolean>,
+    textValue: MutableState<String>,
+    backClickListener: () -> Unit
+) {
     Spacer(modifier = Modifier.height(88.dp))
     Row(verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = { }) {
+        IconButton(onClick = { backClickListener() }) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.back)
@@ -194,8 +236,7 @@ private fun CenterPassword(isActive: MutableState<Boolean>, textValue: MutableSt
     Spacer(modifier = Modifier.height(24.dp))
 
     val letterSpacing = TextUnit(9.0f, TextUnitType.Sp)
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+    OutlinedTextField(modifier = Modifier.fillMaxWidth(),
         value = textValue.value,
         onValueChange = {
             if (it.length <= 6 && it.isDigitsOnly()) textValue.value = it
@@ -242,18 +283,19 @@ private fun CenterPassword(isActive: MutableState<Boolean>, textValue: MutableSt
 //        },
         visualTransformation = {
             passwordFilter(it)
-        }
-    )
+        })
 }
 
 @Composable
-private fun ContinueButton(isActive: Boolean, textValue: String) {
+private fun ContinueButton(
+    isActive: Boolean,
+    onClick: () -> Unit
+) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         Button(
-            modifier = Modifier.height(54.dp),
-            enabled = isActive,
-            onClick = { sendData(textValue) },
-            colors = ButtonDefaults.buttonColors(
+            modifier = Modifier.height(54.dp), enabled = isActive, onClick = {
+                onClick()
+            }, colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
