@@ -2,6 +2,7 @@ package com.yakogdan.logisticsassistant.presentation.screens
 
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -93,7 +94,12 @@ fun LoginScreen() {
                 }
 
                 LoginScreenState.Password -> {
-                    CenterPassword(isActive, textValuePassword) {
+                    CenterPassword(
+                        isActive = isActive,
+                        textValue = textValuePassword,
+                        backIconClickListener = { viewModel.changeStateLogin() }
+                    )
+                    BackHandler {
                         viewModel.changeStateLogin()
                     }
                 }
@@ -206,11 +212,11 @@ private fun CenterLogin(
 private fun CenterPassword(
     isActive: MutableState<Boolean>,
     textValue: MutableState<String>,
-    backClickListener: () -> Unit
+    backIconClickListener: () -> Unit
 ) {
     Spacer(modifier = Modifier.height(88.dp))
     Row(verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = { backClickListener() }) {
+        IconButton(onClick = { backIconClickListener() }) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.back)

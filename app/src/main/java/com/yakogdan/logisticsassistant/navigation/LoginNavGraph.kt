@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun AppNavGraph(
+fun LoginNavGraph(
     navHostController: NavHostController,
     splashScreenContent: @Composable () -> Unit,
     loginScreenContent: @Composable () -> Unit

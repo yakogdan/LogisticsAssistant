@@ -6,10 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import com.yakogdan.logisticsassistant.navigation.AppNavGraph
+import com.yakogdan.logisticsassistant.navigation.LoginNavGraph
 import com.yakogdan.logisticsassistant.navigation.rememberNavigationState
 import com.yakogdan.logisticsassistant.presentation.screens.LoginScreen
+import com.yakogdan.logisticsassistant.presentation.screens.MainScreen
 import com.yakogdan.logisticsassistant.presentation.screens.SplashScreen
 import com.yakogdan.logisticsassistant.presentation.ui.theme.LogisticsAssistantTheme
 
@@ -27,9 +27,9 @@ class MainActivity : ComponentActivity() {
             LogisticsAssistantTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     if (authorized) {
-                        Text(text = "Авторизирован")
+                        MainScreen()
                     } else {
-                        AppNavGraph(
+                        LoginNavGraph(
                             navHostController = navigationState.navHostController,
                             splashScreenContent = { SplashScreen(navigationState.navHostController) },
                             loginScreenContent = { LoginScreen() }
