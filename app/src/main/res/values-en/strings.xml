@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Logistics Assistant</string>
+    <string name="splash_screen_description">Logo on the loading screen</string>
+    <string name="company_logo">Company logo</string>
+    <string name="welcome_text">Welcome to BIA.Logistics Assistant</string>
+    <string name="enter_number">Enter your authorization number</string>
+    <string name="continue_button">Continue</string>
+    <string name="enter_password">Enter the password</string>
+    <string name="get_password">To get a password, contact your supervisor</string>
+    <string name="back">Back</string>
+</resources>
