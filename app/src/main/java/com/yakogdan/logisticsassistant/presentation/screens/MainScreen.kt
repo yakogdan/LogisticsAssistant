@@ -1,5 +1,6 @@
 package com.yakogdan.logisticsassistant.presentation.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -21,34 +22,39 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-
-data class BottomNavItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
-)
+import androidx.navigation.NavHostController
+import com.yakogdan.logisticsassistant.navigation.BottomNavItem
+import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.CHAT
+import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.PROFILE
+import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.SCHEDULES
+import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.TASKS
+import com.yakogdan.logisticsassistant.navigation.MainNavGraph
+import com.yakogdan.logisticsassistant.navigation.Screen
+import com.yakogdan.logisticsassistant.presentation.screens.main.ChatScreen
+import com.yakogdan.logisticsassistant.presentation.screens.main.ProfileScreen
+import com.yakogdan.logisticsassistant.presentation.screens.main.SchedulesScreen
+import com.yakogdan.logisticsassistant.presentation.screens.main.TasksScreen
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navHostController: NavHostController) {
     val items = listOf(
         BottomNavItem(
-            title = "Задания",
+            title = TASKS,
             selectedIcon = Icons.Filled.CheckCircle,
             unselectedIcon = Icons.Outlined.CheckCircle
         ),
         BottomNavItem(
-            title = "Графики",
+            title = SCHEDULES,
             selectedIcon = Icons.Filled.DateRange,
             unselectedIcon = Icons.Outlined.DateRange
         ),
         BottomNavItem(
-            title = "Чат",
+            title = CHAT,
             selectedIcon = Icons.Filled.Email,
             unselectedIcon = Icons.Outlined.Email
         ),
         BottomNavItem(
-            title = "Профиль",
+            title = PROFILE,
             selectedIcon = Icons.Filled.Person,
             unselectedIcon = Icons.Outlined.Person
         ),
@@ -63,8 +69,32 @@ fun MainScreen() {
                 items.forEachIndexed { index, item ->
                     NavigationBarItem(
                         selected = selectedItemIndex == index,
-                        onClick = { selectedItemIndex = index },
-                        label = { Text(text = item.title)},
+                        onClick = {
+                            selectedItemIndex = index
+                            val route: String = when (item.title) {
+                                TASKS -> {
+                                    Screen.Tasks.route
+                                }
+
+                                SCHEDULES -> {
+                                    Screen.Schedules.route
+                                }
+
+                                CHAT -> {
+                                    Screen.Chat.route
+                                }
+
+                                PROFILE -> {
+                                    Screen.Profile.route
+                                }
+
+                                else -> {
+                                    throw RuntimeException("Неизвестный экран")
+                                }
+                            }
+                            navHostController.navigate(route)
+                        },
+                        label = { Text(text = item.title) },
                         icon = {
                             Icon(
                                 imageVector = if (index == selectedItemIndex) {
@@ -80,6 +110,14 @@ fun MainScreen() {
             }
         }
     ) {
-        Text(text = "Main Screen", Modifier.padding(it))
+        Box(modifier = Modifier.padding(it)) {
+            MainNavGraph(
+                navHostController = navHostController,
+                tasksScreenContent = { TasksScreen() },
+                schedulesScreenContent = { SchedulesScreen() },
+                chatScreenContent = { ChatScreen() },
+                profileScreenContent = { ProfileScreen() }
+            )
+        }
     }
 }
