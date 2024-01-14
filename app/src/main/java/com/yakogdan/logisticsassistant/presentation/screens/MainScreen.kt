@@ -35,7 +35,7 @@ import com.yakogdan.logisticsassistant.navigation.Screen
 import com.yakogdan.logisticsassistant.presentation.screens.main.ChatScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.ProfileScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.SchedulesScreen
-import com.yakogdan.logisticsassistant.presentation.screens.main.TasksScreen
+import com.yakogdan.logisticsassistant.presentation.screens.main.tasks.TasksScreen
 
 @Composable
 fun MainScreen(navHostController: NavHostController) {
