@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
@@ -65,6 +67,18 @@ fun TasksScreen() {
                 )
             }
         }
+        val task = TaskModel(
+            taskNumber = 1,
+            cost = 30000,
+            taskDate = "11.08.2023 12:00",
+            status = TaskStatus.New,
+            route = RouteModel(
+                addressFrom = "Машиностроительная улица, 91",
+                dateFrom = "12.08.2023 12:00",
+                addressTo = "Магистральная улица, 52",
+                dateTo = "13.08.2023 13:00"
+            )
+        )
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -72,8 +86,14 @@ fun TasksScreen() {
                 .weight(1f)
                 .background(MaterialTheme.colorScheme.surface)
         ) { index ->
+
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = tabItems[index])
+                LazyColumn(modifier = Modifier.padding(10.dp)) {
+                    val list = listOf("1", "2", "3")
+                    items(list) {
+                        TaskItem(task)
+                    }
+                }
             }
         }
     }
