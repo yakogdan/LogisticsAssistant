@@ -63,7 +63,7 @@ fun TasksScreen() {
                     onClick = {
                         selectedTabIndex = index
                     },
-                    text = { Text(text = name, fontSize = 16.sp) }
+                    text = { Text(text = name, fontSize = 17.sp) }
                 )
             }
         }
