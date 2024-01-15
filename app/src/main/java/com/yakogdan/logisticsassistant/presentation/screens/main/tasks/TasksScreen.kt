@@ -2,8 +2,9 @@ package com.yakogdan.logisticsassistant.presentation.screens.main.tasks
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -68,7 +69,7 @@ fun TasksScreen() {
             }
         }
         val task = TaskModel(
-            taskNumber = 1,
+            taskNumber = 0,
             cost = 30000,
             taskDate = "11.08.2023 12:00",
             status = TaskStatus.New,
@@ -79,18 +80,30 @@ fun TasksScreen() {
                 dateTo = "13.08.2023 13:00"
             )
         )
+
+        val taskList = listOf(
+            task.copy(taskNumber = 1, status = TaskStatus.New),
+            task.copy(taskNumber = 2, status = TaskStatus.Planned),
+            task.copy(taskNumber = 3, status = TaskStatus.InProcess),
+            task.copy(taskNumber = 4, status = TaskStatus.Check),
+        )
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
                 .background(MaterialTheme.colorScheme.surface)
-        ) { index ->
-
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                LazyColumn(modifier = Modifier.padding(10.dp)) {
-                    val list = listOf("1", "2", "3")
-                    items(list) {
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.padding(top = 16.dp))
+                LazyColumn(
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                ) {
+                    items(taskList) { task ->
                         TaskItem(task)
                     }
                 }
