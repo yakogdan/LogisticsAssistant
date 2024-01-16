@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yakogdan.logisticsassistant.R
@@ -31,43 +33,63 @@ fun TaskItem(task: TaskModel) {
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Задание № ${String.format("%03d", task.taskNumber)}",
-                fontSize = 15.sp,
-                fontFamily = FontFamily(Font(R.font.stolzl_medium)),
-            )
-            Spacer(modifier = Modifier.padding(10.dp))
-            Text(
-                text = task.cost.costFormat(),
-                fontSize = 15.sp,
-                fontFamily = FontFamily(Font(R.font.stolzl_medium)),
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = task.taskDate,
-                fontSize = 13.sp,
-                fontFamily = FontFamily(Font(R.font.stolzl_regular)),
-                color = MaterialTheme.colorScheme.secondary
-            )
-            Spacer(modifier = Modifier.padding(10.dp))
-            TaskStatus(task)
-        }
+        NumberAndCost(task)
+        Spacer(modifier = Modifier.padding(4.dp))
+        DateAndStatus(task)
     }
-    Spacer(modifier = Modifier.padding(top = 8.dp))
 }
 
 @Composable
-private fun TaskStatus(task: TaskModel) {
+private fun NumberAndCost(
+    task: TaskModel,
+    fontSize: TextUnit = 15.sp,
+    fontFamily: FontFamily = FontFamily(Font(R.font.stolzl_regular))
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Задание № ${String.format("%03d", task.taskNumber)}",
+            fontSize = fontSize,
+            fontFamily = fontFamily,
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = task.cost.costFormat(),
+            fontSize = fontSize,
+            fontFamily = fontFamily,
+        )
+    }
+}
+
+@Composable
+private fun DateAndStatus(
+    task: TaskModel,
+    fontSize: TextUnit = 13.sp
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = task.taskDate,
+            fontSize = fontSize,
+            fontFamily = FontFamily(Font(R.font.stolzl_book)),
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        TaskStatus(task, fontSize)
+    }
+}
+
+@Composable
+private fun TaskStatus(
+    task: TaskModel,
+    fontSize: TextUnit
+) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(4.dp))
@@ -77,7 +99,7 @@ private fun TaskStatus(task: TaskModel) {
     ) {
         Text(
             text = task.status.name,
-            fontSize = 13.sp,
+            fontSize = fontSize,
             fontFamily = FontFamily(Font(R.font.stolzl_regular)),
             color = task.status.textColor
         )
