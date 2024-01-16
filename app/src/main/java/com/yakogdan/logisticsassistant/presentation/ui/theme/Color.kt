@@ -23,3 +23,6 @@ val OnPinkItem = Color(0xFFC649F2)
 
 val YellowItem = Color(0xFFFFF8E9)
 val OnYellowItem = Color(0xFFFAB020)
+
+val RouteItemGrey = Color(0xFFF4F6F9)
+val OnRouteItemGrey = Color(0xFF6A7B94)

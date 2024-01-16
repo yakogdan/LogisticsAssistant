@@ -72,7 +72,7 @@ fun TasksScreen() {
                     text = {
                         Text(
                             text = name,
-                            fontSize = 17.sp,
+                            fontSize = 16.sp,
                             fontFamily = FontFamily(Font(R.font.stolzl_regular))
                         )
                     }

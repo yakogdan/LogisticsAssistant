@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,13 +37,15 @@ fun TaskItem(task: TaskModel) {
         NumberAndCost(task)
         Spacer(modifier = Modifier.padding(4.dp))
         DateAndStatus(task)
+        Spacer(modifier = Modifier.padding(8.dp))
+        Route(task)
     }
 }
 
 @Composable
 private fun NumberAndCost(
     task: TaskModel,
-    fontSize: TextUnit = 15.sp,
+    fontSize: TextUnit = 14.sp,
     fontFamily: FontFamily = FontFamily(Font(R.font.stolzl_regular))
 ) {
     Row(
@@ -54,12 +57,14 @@ private fun NumberAndCost(
             text = "Задание № ${String.format("%03d", task.taskNumber)}",
             fontSize = fontSize,
             fontFamily = fontFamily,
+            color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = task.cost.costFormat(),
             fontSize = fontSize,
             fontFamily = fontFamily,
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
@@ -67,7 +72,7 @@ private fun NumberAndCost(
 @Composable
 private fun DateAndStatus(
     task: TaskModel,
-    fontSize: TextUnit = 13.sp
+    fontSize: TextUnit = 12.sp
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -102,6 +107,54 @@ private fun TaskStatus(
             fontSize = fontSize,
             fontFamily = FontFamily(Font(R.font.stolzl_regular)),
             color = task.status.textColor
+        )
+    }
+}
+
+@Composable
+fun Route(task: TaskModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // TODO: Переделать на палку из задания
+        Box(
+            modifier = Modifier
+                .height(50.dp)
+                .width(2.dp)
+                .background(MaterialTheme.colorScheme.onBackground)
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Column {
+            AddressAndDate(address = task.route.addressFrom, date = task.route.dateFrom)
+            Spacer(modifier = Modifier.height(8.dp))
+            AddressAndDate(address = task.route.addressTo, date = task.route.dateTo)
+        }
+    }
+}
+
+@Composable
+fun AddressAndDate(
+    address: String,
+    date: String,
+    fontFamily: FontFamily = FontFamily(Font(R.font.stolzl_book))
+) {
+    Column {
+        Text(
+            text = address,
+            fontSize = 14.sp,
+            fontFamily = fontFamily,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            text = date,
+            fontSize = 12.sp,
+            fontFamily = fontFamily,
+            color = MaterialTheme.colorScheme.onTertiaryContainer
         )
     }
 }
