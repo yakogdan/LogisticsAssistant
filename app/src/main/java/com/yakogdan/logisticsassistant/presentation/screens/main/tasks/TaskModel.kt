@@ -5,5 +5,5 @@ data class TaskModel(
     val cost: Int,
     val taskDate: String,
     val status: TaskStatus,
-    val route: RouteModel
+    val listRoutes: List<RouteModel>
 )

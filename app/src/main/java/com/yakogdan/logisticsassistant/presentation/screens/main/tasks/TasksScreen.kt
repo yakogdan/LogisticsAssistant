@@ -79,24 +79,71 @@ fun TasksScreen() {
                 )
             }
         }
+        val listRoutes = mutableListOf(
+            RouteModel(
+                address = "Машиностроительная улица, 91",
+                date = "12.08.2023 12:00"
+            ),
+            RouteModel(
+                address = "Магистральная улица, 52",
+                date = "12.08.2023 13:00"
+            ),
+            RouteModel(
+                address = "Спуск Косиора, 32",
+                date = "12.08.2023 14:00"
+            ),
+            RouteModel(
+                address = "Проезд Ладыгина, 44",
+                date = "12.08.2023 15:00"
+            )
+        )
+        val listRoutes1 = mutableListOf(
+            RouteModel(
+                address = "Магистральная улица, 52",
+                date = "12.08.2023 13:00"
+            ),
+            RouteModel(
+                address = "Спуск Косиора, 32",
+                date = "12.08.2023 14:00"
+            ),
+            RouteModel(
+                address = "Проезд Ладыгина, 44",
+                date = "12.08.2023 15:00"
+            )
+        )
+        val listRoutes2 = mutableListOf(
+            RouteModel(
+                address = "Спуск Косиора, 32",
+                date = "12.08.2023 16:00"
+            ),
+            RouteModel(
+                address = "Проезд Ладыгина, 44",
+                date = "12.08.2023 17:00"
+            )
+        )
+        val listRoutes3 = mutableListOf(
+            RouteModel(
+                address = "Проезд Балканская, 20",
+                date = "12.08.2023 17:00"
+            ),
+            RouteModel(
+                address = "Магистральная улица, 52",
+                date = "12.08.2023 18:00"
+            )
+        )
         val task = TaskModel(
             taskNumber = 0,
             cost = 30000,
             taskDate = "11.08.2023 12:00",
             status = TaskStatus.New,
-            route = RouteModel(
-                addressFrom = "Машиностроительная улица, 91",
-                dateFrom = "12.08.2023 12:00",
-                addressTo = "Магистральная улица, 52",
-                dateTo = "13.08.2023 13:00"
-            )
+            listRoutes = listRoutes
         )
 
         val taskList = listOf(
-            task.copy(taskNumber = 1, status = TaskStatus.New),
-            task.copy(taskNumber = 2, status = TaskStatus.Planned),
-            task.copy(taskNumber = 3, status = TaskStatus.InProcess),
-            task.copy(taskNumber = 4, status = TaskStatus.Check),
+            task.copy(taskNumber = 1, status = TaskStatus.New, listRoutes = listRoutes1),
+            task.copy(taskNumber = 2, status = TaskStatus.Planned, listRoutes = listRoutes2),
+            task.copy(taskNumber = 3, status = TaskStatus.InProcess, listRoutes = listRoutes3),
+            task.copy(taskNumber = 3, status = TaskStatus.Check)
         )
         HorizontalPager(
             state = pagerState,
