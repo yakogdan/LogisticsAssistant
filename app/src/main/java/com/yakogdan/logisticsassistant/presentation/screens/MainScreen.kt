@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.yakogdan.logisticsassistant.navigation.MainNavGraph
 import com.yakogdan.logisticsassistant.navigation.NavigationItem
+import com.yakogdan.logisticsassistant.navigation.Screen
 import com.yakogdan.logisticsassistant.presentation.screens.main.ChatScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.ProfileScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.SchedulesScreen
@@ -50,7 +51,13 @@ fun MainScreen(navHostController: NavHostController) {
                             unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         onClick = {
-                            navHostController.navigate(item.screen.route)
+                            navHostController.navigate(item.screen.route) {
+                                popUpTo(Screen.Tasks.route) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         },
                         label = { Text(text = title) },
                         icon = {
