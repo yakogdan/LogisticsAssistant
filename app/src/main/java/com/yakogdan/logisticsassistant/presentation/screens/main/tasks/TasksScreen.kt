@@ -162,7 +162,7 @@ fun TasksScreen() {
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
                 ) {
                     items(taskList) { task ->
-                        TaskItem(task)
+                        TaskItem(task, {})
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }

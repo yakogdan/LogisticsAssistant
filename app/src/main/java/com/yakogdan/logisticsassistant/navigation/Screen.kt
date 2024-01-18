@@ -7,6 +7,7 @@ sealed class Screen(
     data object Splash : Screen(ROUTE_SPLASH)
     data object Login : Screen(ROUTE_LOGIN)
     data object Tasks : Screen(ROUTE_TASKS)
+    data object TaskInfo : Screen(ROUTE_TASK_INFO)
     data object Schedules : Screen(ROUTE_SCHEDULES)
     data object Chat : Screen(ROUTE_CHAT)
     data object Profile : Screen(ROUTE_PROFILE)
@@ -15,6 +16,7 @@ sealed class Screen(
         const val ROUTE_SPLASH = "splash"
         const val ROUTE_LOGIN = "login"
         const val ROUTE_TASKS = "tasks"
+        const val ROUTE_TASK_INFO = "task_info"
         const val ROUTE_SCHEDULES = "schedules"
         const val ROUTE_CHAT = "chat"
         const val ROUTE_PROFILE = "profile"

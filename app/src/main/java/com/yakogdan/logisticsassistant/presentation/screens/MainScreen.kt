@@ -2,15 +2,6 @@ package com.yakogdan.logisticsassistant.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -20,60 +11,38 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.yakogdan.logisticsassistant.navigation.BottomNavItem
-import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.CHAT
-import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.PROFILE
-import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.SCHEDULES
-import com.yakogdan.logisticsassistant.navigation.BottomNavItem.Companion.TASKS
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.yakogdan.logisticsassistant.navigation.MainNavGraph
-import com.yakogdan.logisticsassistant.navigation.Screen
+import com.yakogdan.logisticsassistant.navigation.NavigationItem
 import com.yakogdan.logisticsassistant.presentation.screens.main.ChatScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.ProfileScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.SchedulesScreen
+import com.yakogdan.logisticsassistant.presentation.screens.main.tasks.TaskInfoScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.tasks.TasksScreen
 
 @Composable
 fun MainScreen(navHostController: NavHostController) {
     val items = listOf(
-        BottomNavItem(
-            title = TASKS,
-            selectedIcon = Icons.Filled.CheckCircle,
-            unselectedIcon = Icons.Outlined.CheckCircle
-        ),
-        BottomNavItem(
-            title = SCHEDULES,
-            selectedIcon = Icons.Filled.DateRange,
-            unselectedIcon = Icons.Outlined.DateRange
-        ),
-        BottomNavItem(
-            title = CHAT,
-            selectedIcon = Icons.Filled.Email,
-            unselectedIcon = Icons.Outlined.Email
-        ),
-        BottomNavItem(
-            title = PROFILE,
-            selectedIcon = Icons.Filled.Person,
-            unselectedIcon = Icons.Outlined.Person
-        ),
+        NavigationItem.Tasks,
+        NavigationItem.Schedules,
+        NavigationItem.Chat,
+        NavigationItem.Profile
     )
-
-    var selectedItemIndex by rememberSaveable {
-        mutableIntStateOf(0)
-    }
     Scaffold(
         bottomBar = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground
             ) {
-                items.forEachIndexed { index, item ->
+                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                items.forEach { item ->
+                    val title = stringResource(id = item.titleResId)
                     NavigationBarItem(
-                        selected = selectedItemIndex == index,
+                        selected = currentRoute == item.screen.route,
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.onBackground,
                             selectedTextColor = MaterialTheme.colorScheme.onBackground,
@@ -81,39 +50,17 @@ fun MainScreen(navHostController: NavHostController) {
                             unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         onClick = {
-                            selectedItemIndex = index
-                            val route: String = when (item.title) {
-                                TASKS -> {
-                                    Screen.Tasks.route
-                                }
-
-                                SCHEDULES -> {
-                                    Screen.Schedules.route
-                                }
-
-                                CHAT -> {
-                                    Screen.Chat.route
-                                }
-
-                                PROFILE -> {
-                                    Screen.Profile.route
-                                }
-
-                                else -> {
-                                    throw RuntimeException("Неизвестный экран")
-                                }
-                            }
-                            navHostController.navigate(route)
+                            navHostController.navigate(item.screen.route)
                         },
-                        label = { Text(text = item.title) },
+                        label = { Text(text = title) },
                         icon = {
                             Icon(
-                                imageVector = if (index == selectedItemIndex) {
+                                imageVector = if (currentRoute == item.screen.route) {
                                     item.selectedIcon
                                 } else {
                                     item.unselectedIcon
                                 },
-                                contentDescription = item.title
+                                contentDescription = title
                             )
                         }
                     )
@@ -125,6 +72,7 @@ fun MainScreen(navHostController: NavHostController) {
             MainNavGraph(
                 navHostController = navHostController,
                 tasksScreenContent = { TasksScreen() },
+                taskInfoScreenContent = { TaskInfoScreen() },
                 schedulesScreenContent = { SchedulesScreen() },
                 chatScreenContent = { ChatScreen() },
                 profileScreenContent = { ProfileScreen() }

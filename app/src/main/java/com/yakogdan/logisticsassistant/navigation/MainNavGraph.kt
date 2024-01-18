@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 fun MainNavGraph(
     navHostController: NavHostController,
     tasksScreenContent: @Composable () -> Unit,
+    taskInfoScreenContent: @Composable () -> Unit,
     schedulesScreenContent: @Composable () -> Unit,
     chatScreenContent: @Composable () -> Unit,
     profileScreenContent: @Composable () -> Unit
@@ -19,6 +20,9 @@ fun MainNavGraph(
     ) {
         composable(Screen.Tasks.route) {
             tasksScreenContent()
+        }
+        composable(Screen.TaskInfo.route) {
+            taskInfoScreenContent()
         }
         composable(Screen.Schedules.route) {
             schedulesScreenContent()

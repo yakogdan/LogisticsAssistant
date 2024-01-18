@@ -2,6 +2,7 @@ package com.yakogdan.logisticsassistant.presentation.screens.main.tasks
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,13 +34,14 @@ import com.yakogdan.logisticsassistant.R
 import java.text.DecimalFormat
 
 @Composable
-fun TaskItem(task: TaskModel) {
+fun TaskItem(task: TaskModel, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
+            .clickable { onClick() }
     ) {
         NumberAndCost(task)
         Spacer(modifier = Modifier.padding(4.dp))
