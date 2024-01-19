@@ -13,11 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.yakogdan.logisticsassistant.navigation.MainNavGraph
 import com.yakogdan.logisticsassistant.navigation.NavigationItem
-import com.yakogdan.logisticsassistant.navigation.Screen
+import com.yakogdan.logisticsassistant.navigation.rememberNavigationState
 import com.yakogdan.logisticsassistant.presentation.screens.main.ChatScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.ProfileScreen
 import com.yakogdan.logisticsassistant.presentation.screens.main.SchedulesScreen
@@ -25,21 +24,24 @@ import com.yakogdan.logisticsassistant.presentation.screens.main.tasks.TaskInfoS
 import com.yakogdan.logisticsassistant.presentation.screens.main.tasks.TasksScreen
 
 @Composable
-fun MainScreen(navHostController: NavHostController) {
-    val items = listOf(
-        NavigationItem.Tasks,
-        NavigationItem.Schedules,
-        NavigationItem.Chat,
-        NavigationItem.Profile
-    )
+fun MainScreen() {
+    val navigationState = rememberNavigationState()
     Scaffold(
         bottomBar = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground
             ) {
-                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
+
+                val items = listOf(
+                    NavigationItem.Tasks,
+                    NavigationItem.Schedules,
+                    NavigationItem.Chat,
+                    NavigationItem.Profile
+                )
+
                 items.forEach { item ->
                     val title = stringResource(id = item.titleResId)
                     NavigationBarItem(
@@ -51,13 +53,7 @@ fun MainScreen(navHostController: NavHostController) {
                             unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         onClick = {
-                            navHostController.navigate(item.screen.route) {
-                                popUpTo(Screen.Tasks.route) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+                            navigationState.navigateTo(item.screen.route)
                         },
                         label = { Text(text = title) },
                         icon = {
@@ -77,7 +73,7 @@ fun MainScreen(navHostController: NavHostController) {
     ) {
         Box(modifier = Modifier.padding(it)) {
             MainNavGraph(
-                navHostController = navHostController,
+                navHostController = navigationState.navHostController,
                 tasksScreenContent = { TasksScreen() },
                 taskInfoScreenContent = { TaskInfoScreen() },
                 schedulesScreenContent = { SchedulesScreen() },

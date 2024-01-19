@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
             LogisticsAssistantTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     if (authorized) {
-                        MainScreen(navigationState.navHostController)
+                        MainScreen()
                     } else {
                         LoginNavGraph(
                             navHostController = navigationState.navHostController,
